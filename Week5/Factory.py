@@ -5,9 +5,9 @@ import matplotlib.pyplot as plt
 
 
 class Factory(ManufacturingProcess):
-    row = 2
+    row = 2 # 라인의 수
     col = 5
-    numStartProduct = 2
+    numStartProduct = 2 # 라인이 2개 라서
 
     def __init__(self, strFilename, breakProb):
         self.breakProb = breakProb
@@ -17,9 +17,9 @@ class Factory(ManufacturingProcess):
         self.processes = [[[] for j in range(self.col)] for i in range(self.row)]
         for i in range(self.row):
             for j in range(self.col):
-                if i == 0:
+                if i == 0: # 큐
                     self.processes[i][j] = ManufacturingProcess('queue')
-                elif i == 1:
+                elif i == 1: # 스택
                     self.processes[i][j] = ManufacturingProcess('stack')
 
     def selectLine(self, matCost):
@@ -30,6 +30,7 @@ class Factory(ManufacturingProcess):
         # Processor = this.col
 
         # Memoization table
+        # 모두 0으로 채워진 메트릭스
         matShortestCost = np.zeros((self.row, self.col))
 
         # Retrace table
@@ -55,6 +56,7 @@ class Factory(ManufacturingProcess):
         else:
             endLine = int(1)
 
+        # 1 씩 뒤로 가면서 라인 완성
         for i in range(self.col-1, 0, -1):
             endLine = int(matPrevLine[endLine][i])
 
