@@ -24,15 +24,16 @@ class Node:
         else:
             ret = str(self.stat) + '\n'
         return ret
-
+    # 4
     def splitNode(self):
         self.blnSplit = True
         gains = self.calculateInformationGainPerFeatures()
         idxMaxGainFeature = -1
         maxGain = -999999999999999999.0
+        # max 값
         for itr in range(len(gains)):
-            if ?????????? < ??????????:
-                ?????????? = ??????????
+            if gains[itr] > maxGain :
+                maxGain = gains[itr]
                 idxMaxGainFeature = itr
 
         for value in Record.values:
@@ -40,18 +41,19 @@ class Node:
             for record in self.records:
                 if record.feature[idxMaxGainFeature] == value:
                     childRecords.append(record)
-            self.children[value] = ??????????(childRecords)
+            self.children[value] = Node(childRecords)
         self.decisionAttribute = idxMaxGainFeature
         return self.children
-
+    # 3
     def calculateInformationGainPerFeatures(self):
         gains = []
-        entropyClass = self.?????
+        entropyClass = self.calculateClassEntropy()
         for itr in range(Record.numValues):
-            entropyConditional = self.?????
+            entropyConditional = self.calculateConditionalEntropy(itr)
             gains.append( entropyClass - entropyConditional )
         return gains
 
+    # 1
     def calculateClassEntropy(self):
         entropy = 0.0
         for type in Record.types:
@@ -60,10 +62,11 @@ class Node:
                 if record.party == type:
                     cnt = cnt + 1.0
             size = float(len(self.records))
-            prob = float(????? / ?????)
-            entropy = entropy - ????? * math.?????(?????,2)
+            prob = float( cnt / size )  # 확률
+            entropy = entropy - prob * math.log(prob,2)
         return entropy
 
+    # 2
     def calculateConditionalEntropy(self,idxFeature):
         entropy = 0.0
         for value in Record.values:
@@ -72,13 +75,13 @@ class Node:
                 cntFeatureAndClass = 0.0
                 for record in self.records:
                     if record.feature[idxFeature] == value:
-                        ????? = ????? + 1
+                        cntFeature = cntFeature + 1
                         if record.party == type:
-                            ????? = ????? + 1.0
+                            cntFeatureAndClass = cntFeatureAndClass + 1.0
                 size = float(len(self.records))
                 probFeature = cntFeature / size + 0.000001
                 probFeatureAndClass = cntFeatureAndClass / size + 0.000001
-                entropy = entropy + ????? * math.log(?????/?????,2)
+                entropy = entropy + probFeatureAndClass * math.log(probFeature/probFeatureAndClass,2)
         return entropy
 
 if __name__ == "__main__":
