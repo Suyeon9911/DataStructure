@@ -1,3 +1,3 @@
-# DataStructureStudy
+## DataStructureStudy
 
-데이터구조 스터디 with System optimization labs
+DataSturcture Study with System optimization labs
